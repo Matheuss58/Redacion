@@ -9,14 +9,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<!-- Ou sem a classe se quiser que comece oculto -->
     <!-- Tela inicial - apenas o botão -->
     <div class="initial-screen" id="initialScreen">
         <button class="view-essay-btn" id="viewEssayBtn">Ver Redação</button>
     </div>
 
+    <!-- Tela de leitura da redação -->
+    <div class="reading-screen" id="readingScreen" style="display: none;">
+        <div class="reading-header">
+            <h1>LEIA</h1>
+        </div>
+        <div class="essay-card reading-mode">
+            <h2 class="essay-title" id="readingEssayTitle"></h2>
+            <div class="essay-text" id="readingEssayText"></div>
+        </div>
+        <button class="start-questions-btn" id="startQuestionsBtn">Responda às questões</button>
+    </div>
+
     <!-- Conteúdo principal (inicialmente escondido) -->
-    <div class="main-content" id="mainContent">
+    <div class="main-content" id="mainContent" style="display: none;">
         <!-- Tela de Exercício -->
         <div id="exerciseScreen">
             <div class="essay-card">
@@ -26,6 +37,11 @@
 
             <div class="analysis-card">
                 <h2 class="section-title">Analise a Redação</h2>
+                
+                <div class="input-group">
+                    <label class="input-label" for="repertoire">Qual o repertório inicial utilizado?</label>
+                    <textarea class="input-field" id="repertoire" placeholder="Descreva o repertório sociocultural utilizado no início da redação..."></textarea>
+                </div>
                 
                 <div class="input-group">
                     <label class="input-label" for="thesis">Qual a tese da redação?</label>
@@ -66,6 +82,11 @@
                         <h3 class="column-title">Suas Respostas</h3>
                         
                         <div class="answer-item">
+                            <span class="answer-label">Repertório inicial:</span>
+                            <div class="answer-text" id="userRepertoire"></div>
+                        </div>
+                        
+                        <div class="answer-item">
                             <span class="answer-label">Tese:</span>
                             <div class="answer-text" id="userThesis"></div>
                         </div>
@@ -88,6 +109,11 @@
                     
                     <div class="comparison-column correct-column">
                         <h3 class="column-title">Gabarito Oficial</h3>
+                        
+                        <div class="answer-item">
+                            <span class="answer-label">Repertório inicial:</span>
+                            <div class="answer-text correct-answer" id="correctRepertoire"></div>
+                        </div>
                         
                         <div class="answer-item">
                             <span class="answer-label">Tese:</span>
