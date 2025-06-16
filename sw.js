@@ -1,4 +1,4 @@
-const CACHE_NAME = 'redacao-nota-1000-v3';
+const CACHE_NAME = 'redacao-nota-1000-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -11,46 +11,29 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(ASSETS);
-      })
+      .then((cache) => cache.addAll(ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
+        keys.filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
       );
     })
   );
+  clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
+  // Cache-first strategy
   event.respondWith(
     caches.match(event.request)
-      .then((response) => {
-        return response || fetch(event.request)
-          .then((fetchResponse) => {
-            // Cache apenas respostas válidas
-            if(!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
-              return fetchResponse;
-            }
-
-            const responseToCache = fetchResponse.clone();
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return fetchResponse;
-          });
+      .then((cachedResponse) => {
+        return cachedResponse || fetch(event.request);
       })
   );
 });
@@ -94,3 +77,79 @@ setTimeout(() => {
     };
   }
 }, 5000);
+
+// Controle de instalação PWA
+const installButton = document.getElementById('installBtn');
+let deferredPrompt;
+
+// Configurações específicas por plataforma
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
+// Mostra o botão de instalação de forma inteligente
+function showInstallButton() {
+  if (isStandalone) {
+    installButton.style.display = 'none';
+    return;
+  }
+
+  if (isIOS) {
+    installButton.textContent = 'Adicionar à Tela Inicial';
+    installButton.style.display = 'block';
+  } else {
+    installButton.textContent = 'Instalar App';
+    installButton.style.display = 'block';
+  }
+}
+
+// Evento para instalação
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallButton();
+});
+
+// Lógica do botão de instalação
+installButton.addEventListener('click', async () => {
+  if (deferredPrompt && !isIOS) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      installButton.style.display = 'none';
+    }
+    deferredPrompt = null;
+  } else if (isIOS) {
+    alert('Para instalar:\n1. Compartilhar (ícone de caixa com flecha)\n2. Adicionar à Tela de Início');
+  } else {
+    alert('Use o menu do navegador (⋯) e procure por "Instalar Redação Nota 1000"');
+  }
+});
+
+// Verifica se já está instalado
+window.addEventListener('appinstalled', () => {
+  installButton.style.display = 'none';
+  console.log('PWA foi instalado');
+});
+
+// Mostra o botão após 10 segundos se não detectar o evento
+setTimeout(() => {
+  if (!deferredPrompt && !isStandalone) {
+    showInstallButton();
+  }
+}, 10000);
+
+// Inicialização
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('ServiceWorker registrado:', registration.scope);
+        showInstallButton();
+      })
+      .catch(error => {
+        console.error('Falha no ServiceWorker:', error);
+        showInstallButton();
+      });
+  });
+}

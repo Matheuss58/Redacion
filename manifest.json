@@ -7,7 +7,7 @@
   "background_color": "#6C63FF",
   "theme_color": "#6C63FF",
   "description": "Aprenda a analisar redações nota 1000 do ENEM",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "icon-72x72.png",
@@ -51,5 +51,18 @@
       "type": "image/png"
     }
   ],
-  "splash_pages": null
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshot2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
 }
