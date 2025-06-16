@@ -388,4 +388,79 @@ body {
     .back-btn, .next-btn {
         width: 100%;
     }
+      .read-label {
+        font-size: 2.8rem;
+    }
+    
+    .read-subtitle {
+        font-size: 1rem;
+    }
+    
+    .read-label-container {
+        padding: 1.2rem;
+    }
+}
+
+/* Adicione isso no seu CSS, preferencialmente na seção da tela de leitura */
+
+.read-label-container {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    margin-bottom: 2rem;
+    border: 3px solid white;
+    position: relative;
+    overflow: hidden;
+}
+
+.read-label-container::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(135deg, 
+        rgba(255,255,255,0.3) 0%, 
+        rgba(255,255,255,0.1) 50%, 
+        rgba(255,255,255,0.3) 100%);
+    z-index: -1;
+    border-radius: 16px;
+}
+
+.read-label {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    animation: pulse 2s infinite alternate;
+}
+
+.read-subtitle {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    opacity: 0.9;
+    letter-spacing: 1px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+        transform: scale(1.05);
+        text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Ajuste o padding da tela de leitura se necessário */
+.reading-screen {
+    padding: 2rem 1.5rem;
 }
