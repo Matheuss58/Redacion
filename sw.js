@@ -54,3 +54,43 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+
+// Debug do PWA
+console.log('Verificando requisitos PWA:');
+
+// Verifica se o navegador suporta PWAs
+if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
+  console.log('✅ Navegador compatível com PWA');
+} else {
+  console.warn('⚠️ Navegador não suporta todos os recursos PWA');
+}
+
+// Debug do Service Worker
+navigator.serviceWorker.getRegistration().then(reg => {
+  if (reg) {
+    console.log('✅ Service Worker registrado:', reg.scope);
+  } else {
+    console.warn('⚠️ Service Worker não registrado');
+  }
+});
+
+// Debug do Manifest
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  console.log('✅ Já instalado como PWA');
+} else {
+  console.log('ℹ️ Não instalado ainda - modo navegador');
+}
+
+// Simula o evento de instalação após 5 segundos (apenas para desenvolvimento)
+setTimeout(() => {
+  if (!deferredPrompt) {
+    console.log('⚠️ Evento beforeinstallprompt não disparou - simulando para desenvolvimento');
+    installBtn.style.display = 'block';
+    installBtn.textContent = 'Instalar App (Modo Dev)';
+    
+    // Implementação alternativa para desenvolvimento
+    installBtn.onclick = () => {
+      alert('No ambiente de produção, isto instalaria o PWA.\n\nPara testar localmente, no Chrome:\n1. Clique no ícone de 3 pontos\n2. "Instalar Redação Nota 1000"');
+    };
+  }
+}, 5000);
