@@ -146,7 +146,7 @@ function loadCurrentEssay() {
 }
 
 function showComparison() {
-    const currentEssay = essaysDatabase[currentEssayIndex];
+    const currentEssay = shuffledEssays[currentEssayIndex]; // Mudar essaysDatabase para shuffledEssays
     
     userRepertoire.textContent = repertoireInput.value || "(Não respondido)";
     userThesis.textContent = thesisInput.value || "(Não respondido)";
@@ -163,7 +163,6 @@ function showComparison() {
     exerciseScreen.style.display = 'none';
     comparisonScreen.style.display = 'block';
 }
-
 
 function nextEssay() {
     // Avança para a próxima redação (com loop)
@@ -183,5 +182,5 @@ function backToHome() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    shuffleEssays(); // Embaralha as redações quando a página carrega
+    shuffleEssays();
 });
