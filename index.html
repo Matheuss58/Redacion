@@ -26,21 +26,20 @@
 
     <!-- Tela de leitura da redação -->
     <div class="reading-screen" id="readingScreen" style="display: none;">
-        <!-- Substitua o reading-header atual por: -->
-<div class="reading-header">
-    <div class="read-label-container">
-        <div class="read-label">LEIA</div>
-        <div class="read-subtitle">Redação Modelo ENEM</div>
-    </div>
-</div>
+        <div class="reading-header">
+            <div class="read-label-container">
+                <div class="read-label">LEIA</div>
+                <div class="read-subtitle">Redação Modelo ENEM</div>
+            </div>
+        </div>
         <div class="essay-card reading-mode">
             <h2 class="essay-title" id="readingEssayTitle"></h2>
             <div class="essay-text" id="readingEssayText"></div>
         </div>
-        <button class="start-questions-btn" id="startQuestionsBtn">Responda às questões</button>
+        <button class="start-questions-btn" id="startQuestionsBtn">Responda à questão</button>
     </div>
 
-    <!-- Conteúdo principal (inicialmente escondido) -->
+    <!-- Conteúdo principal -->
     <div class="main-content" id="mainContent" style="display: none;">
         <!-- Tela de Exercício -->
         <div id="exerciseScreen">
@@ -53,28 +52,8 @@
                 <h2 class="section-title">Analise a Redação</h2>
                 
                 <div class="input-group">
-                    <label class="input-label" for="repertoire">Qual o repertório inicial utilizado?</label>
-                    <textarea class="input-field" id="repertoire" placeholder="Descreva o repertório sociocultural utilizado no início da redação..."></textarea>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label" for="thesis">Qual a tese da redação?</label>
-                    <textarea class="input-field" id="thesis" placeholder="Digite a tese apresentada na redação..."></textarea>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label" for="arguments">Quais são os argumentos utilizados?</label>
-                    <textarea class="input-field" id="arguments" placeholder="Liste os argumentos, separando por vírgulas..."></textarea>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label" for="intervention">Qual a proposta de intervenção?</label>
-                    <textarea class="input-field" id="intervention" placeholder="Descreva a proposta de intervenção apresentada..."></textarea>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label" for="connectors">Quais conectivos foram utilizados?</label>
-                    <textarea class="input-field" id="connectors" placeholder="Liste os conectivos encontrados, separando por vírgulas..."></textarea>
+                    <label class="input-label" id="questionLabel"></label>
+                    <textarea class="input-field" id="userAnswer" placeholder="Digite sua resposta aqui..."></textarea>
                 </div>
                 
                 <button class="submit-btn" id="showAnswerBtn">Mostrar Gabarito</button>
@@ -83,77 +62,28 @@
 
         <!-- Tela de Comparação -->
         <div id="comparisonScreen" style="display: none;">
-            <div class="essay-card">
-                <h2 class="essay-title" id="compareEssayTitle"></h2>
-                <div class="essay-text" id="compareEssayText"></div>
-            </div>
-
             <div class="analysis-card">
                 <h2 class="section-title">Comparação com o Gabarito</h2>
                 
                 <div class="comparison-container">
                     <div class="comparison-column user-column">
-                        <h3 class="column-title">Suas Respostas</h3>
-                        
+                        <h3 class="column-title">Sua Resposta</h3>
                         <div class="answer-item">
-                            <span class="answer-label">Repertório inicial:</span>
-                            <div class="answer-text" id="userRepertoire"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Tese:</span>
-                            <div class="answer-text" id="userThesis"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Argumentos:</span>
-                            <div class="answer-text" id="userArguments"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Proposta de Intervenção:</span>
-                            <div class="answer-text" id="userIntervention"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Conectivos:</span>
-                            <div class="answer-text" id="userConnectors"></div>
+                            <div class="answer-text" id="userAnswerText"></div>
                         </div>
                     </div>
                     
                     <div class="comparison-column correct-column">
                         <h3 class="column-title">Gabarito Oficial</h3>
-                        
                         <div class="answer-item">
-                            <span class="answer-label">Repertório inicial:</span>
-                            <div class="answer-text correct-answer" id="correctRepertoire"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Tese:</span>
-                            <div class="answer-text correct-answer" id="correctThesis"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Argumentos:</span>
-                            <div class="answer-text correct-answer" id="correctArguments"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Proposta de Intervenção:</span>
-                            <div class="answer-text correct-answer" id="correctIntervention"></div>
-                        </div>
-                        
-                        <div class="answer-item">
-                            <span class="answer-label">Conectivos:</span>
-                            <div class="answer-text correct-answer" id="correctConnectors"></div>
+                            <div class="answer-text correct-answer" id="correctAnswerText"></div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="comparison-buttons">
-                    <button class="back-btn" id="backToHomeBtn">Voltar para a primeira página</button>
-                    <button class="next-btn" id="nextEssayBtn">Próxima Redação</button>
+                    <button class="back-btn" id="backToHomeBtn">Voltar para início</button>
+                    <button class="next-btn" id="nextQuestionBtn">Próxima Questão</button>
                 </div>
             </div>
         </div>

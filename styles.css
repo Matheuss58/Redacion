@@ -26,7 +26,7 @@ body {
     min-height: 100vh;
 }
 
-/* Tela inicial - apenas o botão */
+/* Tela inicial */
 .initial-screen {
     position: fixed;
     top: 0;
@@ -65,92 +65,9 @@ body {
     z-index: 1;
 }
 
-.view-essay-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #8A85FF 0%, #6C63FF 100%);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
 .view-essay-btn:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(108, 99, 255, 0.6);
-}
-
-.view-essay-btn:hover::before {
-    opacity: 1;
-}
-
-.view-essay-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 5px 20px rgba(108, 99, 255, 0.6);
-}
-
-.btn-text {
-    position: relative;
-    z-index: 2;
-    letter-spacing: 1px;
-}
-
-.btn-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-    z-index: 2;
-}
-
-.view-essay-btn:hover .btn-icon {
-    transform: translateX(5px);
-}
-
-.btn-dots {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(rgba(255,255,255,0.3) 20%, transparent 20%);
-    background-size: 10px 10px;
-    opacity: 0.3;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    border-radius: 70px;
-}
-
-/* Efeito de brilho ao passar o mouse */
-.view-essay-btn::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255,255,255,0.1);
-    transform: rotate(45deg);
-    z-index: 1;
-    transition: all 0.6s ease;
-    pointer-events: none;
-}
-
-.view-essay-btn:hover::after {
-    left: 100%;
-}
-
-/* Animação pulsante sutil */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.initial-screen .view-essay-btn {
-    animation: pulse 3s infinite ease-in-out;
 }
 
 /* Tela de leitura */
@@ -161,42 +78,51 @@ body {
     animation: fadeIn 0.5s ease;
 }
 
-.reading-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.reading-header h1 {
-    color: var(--primary);
-    font-size: 3rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.essay-card.reading-mode {
-    background-color: white;
+.read-label-container {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 1.5rem;
     border-radius: 12px;
     box-shadow: var(--shadow-lg);
-    padding: 2.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid var(--gray);
-}
-
-.essay-card.reading-mode .essay-title {
-    color: var(--primary);
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
     text-align: center;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--gray);
+    margin-bottom: 2rem;
 }
 
-.essay-card.reading-mode .essay-text {
-    font-size: 1.1rem;
+.read-label {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.read-subtitle {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    opacity: 0.9;
+    letter-spacing: 1px;
+}
+
+.essay-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.essay-title {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.essay-text {
+    white-space: pre-line;
     line-height: 1.8;
-    color: var(--dark);
 }
 
 .start-questions-btn {
@@ -229,32 +155,6 @@ body {
     padding: 2rem;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Estilos do conteúdo */
-.essay-card {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    padding: 2rem;
-    margin-bottom: 2rem;
-}
-
-.essay-title {
-    color: var(--primary);
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-
-.essay-text {
-    white-space: pre-line;
-    line-height: 1.8;
-}
-
 .analysis-card {
     background-color: white;
     border-radius: 12px;
@@ -268,19 +168,6 @@ body {
     margin-bottom: 1.5rem;
     font-size: 1.3rem;
     font-weight: 600;
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-.section-title::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background-color: var(--secondary);
-    border-radius: 3px;
 }
 
 .input-group {
@@ -368,19 +255,13 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.answer-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--dark-gray);
-}
-
 .answer-text {
     background-color: var(--gray);
     padding: 1rem;
     border-radius: 8px;
     font-size: 0.95rem;
     line-height: 1.6;
+    min-height: 100px;
 }
 
 .correct-answer {
@@ -398,8 +279,6 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: var(--transition);
-    display: block;
-    margin: 0 auto;
 }
 
 .next-btn:hover {
@@ -434,21 +313,21 @@ body {
     box-shadow: var(--shadow);
 }
 
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
-    .reading-screen {
-        padding: 1.5rem;
-    }
-    
-    .reading-header h1 {
-        font-size: 2.5rem;
-    }
-    
-    .essay-card.reading-mode {
-        padding: 1.5rem;
-    }
-    
-    .main-content {
+    .reading-screen, .main-content {
         padding: 1rem;
     }
     
@@ -461,99 +340,20 @@ body {
         gap: 1rem;
     }
     
-    .submit-btn, .next-btn, .start-questions-btn {
+    .submit-btn, .next-btn, .back-btn, .start-questions-btn {
         width: 100%;
-    }
-
-    .comparison-buttons {
-        flex-direction: column;
     }
     
-    .back-btn, .next-btn {
-        width: 100%;
-    }
-      .read-label {
-        font-size: 2.8rem;
+    .read-label {
+        font-size: 2.5rem;
     }
     
     .read-subtitle {
         font-size: 1rem;
     }
     
-    .read-label-container {
-        padding: 1.2rem;
-    }
-        .view-essay-btn {
-        padding: 1.2rem 2.5rem;
+    .view-essay-btn {
+        padding: 1.2rem 2rem;
         font-size: 1.1rem;
     }
-    
-    .btn-icon svg {
-        width: 20px;
-        height: 20px;
-    }
-}
-
-/* Adicione isso no seu CSS, preferencialmente na seção da tela de leitura */
-
-.read-label-container {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow-lg);
-    text-align: center;
-    margin-bottom: 2rem;
-    border: 3px solid white;
-    position: relative;
-    overflow: hidden;
-}
-
-.read-label-container::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: linear-gradient(135deg, 
-        rgba(255,255,255,0.3) 0%, 
-        rgba(255,255,255,0.1) 50%, 
-        rgba(255,255,255,0.3) 100%);
-    z-index: -1;
-    border-radius: 16px;
-}
-
-.read-label {
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    letter-spacing: 3px;
-    margin-bottom: 0.5rem;
-    line-height: 1;
-    animation: pulse 2s infinite alternate;
-}
-
-.read-subtitle {
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 500;
-    opacity: 0.9;
-    letter-spacing: 1px;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-    100% {
-        transform: scale(1.05);
-        text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
-    }
-}
-
-/* Ajuste o padding da tela de leitura se necessário */
-.reading-screen {
-    padding: 2rem 1.5rem;
 }
