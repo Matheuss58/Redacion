@@ -209,14 +209,16 @@ function loadCurrentEssayForReading() {
     readingEssayText.textContent = currentEssay.text;
 }
 
+// Substitua a função shuffleEssays por esta:
 function shuffleEssays() {
     shuffledEssays = [...essaysDatabase];
+    // Embaralha a ordem das redações
     for (let i = shuffledEssays.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffledEssays[i], shuffledEssays[j]] = [shuffledEssays[j], shuffledEssays[i]];
     }
     
-    // Embaralha as questões de cada redação
+    // Embaralha as questões de cada redação individualmente
     shuffledEssays.forEach(essay => {
         essay.shuffledQuestions = [...essay.questions];
         for (let i = essay.shuffledQuestions.length - 1; i > 0; i--) {
@@ -226,17 +228,19 @@ function shuffleEssays() {
     });
 }
 
+// Substitua a função loadCurrentQuestion por esta:
 function loadCurrentQuestion() {
+    // Seleciona uma redação aleatória
+    currentEssayIndex = Math.floor(Math.random() * shuffledEssays.length);
     const currentEssay = shuffledEssays[currentEssayIndex];
+    
     essayTitle.textContent = currentEssay.title;
     essayText.textContent = currentEssay.text;
     
-    // Pega uma questão aleatória (não repetida) da redação atual
-    if (currentEssay.currentQuestions === undefined || currentEssay.currentQuestions.length === 0) {
-        currentEssay.currentQuestions = [...currentEssay.shuffledQuestions];
-    }
+    // Seleciona uma questão aleatória dessa redação
+    const randomQuestionIndex = Math.floor(Math.random() * currentEssay.questions.length);
+    const question = currentEssay.questions[randomQuestionIndex];
     
-    const question = currentEssay.currentQuestions.pop();
     questionLabel.textContent = question.question;
     userAnswer.value = '';
     
@@ -255,29 +259,12 @@ function showComparison() {
     comparisonScreen.style.display = 'block';
 }
 
+// Substitua a função nextQuestion por esta versão simplificada:
 function nextQuestion() {
-    const currentEssay = shuffledEssays[currentEssayIndex];
-    
-    // Verifica se ainda há questões para esta redação
-    if (currentEssay.currentQuestions && currentEssay.currentQuestions.length > 0) {
-        // Carrega a próxima questão
-        comparisonScreen.style.display = 'none';
-        exerciseScreen.style.display = 'block';
-        loadCurrentQuestion();
-    } else {
-        // Se não houver mais questões, vai para a próxima redação
-        nextEssay();
-    }
-}
-
-function nextEssay() {
-    // Avança para a próxima redação (com loop)
-    currentEssayIndex = (currentEssayIndex + 1) % shuffledEssays.length;
-    
-    // Volta para a tela de leitura com a nova redação
+    // Sempre carrega uma nova pergunta aleatória
     comparisonScreen.style.display = 'none';
-    readingScreen.style.display = 'block';
-    loadCurrentEssayForReading();
+    exerciseScreen.style.display = 'block';
+    loadCurrentQuestion();
 }
 
 function backToHome() {
@@ -290,4 +277,118 @@ function backToHome() {
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     shuffleEssays();
+});
+
+// Adicionar ao script.js existente
+
+// Dados dos conceitos
+const conceptsData = {
+    thesis: {
+        title: "O que é Tese?",
+        content: `
+            <h3>Definição</h3>
+            <p>A tese é a sua posição central sobre o tema proposto. É a ideia principal que você vai defender ao longo da redação.</p>
+            
+            <h3>Características de uma boa tese</h3>
+            <ul>
+                <li>Clara e objetiva</li>
+                <li>Relacionada diretamente ao tema</li>
+                <li>Apresenta um ponto de vista específico</li>
+                <li>Pode ser desdobrada em argumentos</li>
+            </ul>
+            
+            <h3>Exemplo</h3>
+            <p><em>Tema:</em> Desafios para a valorização da herança africana no Brasil</p>
+            <p><em>Tese:</em> "A desvalorização da cultura africana no Brasil decorre principalmente da falta de políticas públicas eficientes e da educação precária sobre o tema."</p>
+        `
+    },
+    repertoire: {
+        title: "O que é Repertório?",
+        content: `
+            <h3>Definição</h3>
+            <p>Repertório são os conhecimentos externos que você utiliza para embasar sua argumentação. Podem ser citações, dados, conceitos teóricos, referências históricas ou culturais.</p>
+            
+            <h3>Tipos de repertório</h3>
+            <ul>
+                <li><strong>Sociocultural:</strong> filmes, livros, músicas, obras de arte</li>
+                <li><strong>Acadêmico:</strong> teorias, conceitos de pensadores</li>
+                <li><strong>Factual:</strong> dados estatísticos, fatos históricos</li>
+                <li><strong>Proverbios e ditados:</strong> quando bem aplicados</li>
+            </ul>
+            
+            <h3>Exemplo</h3>
+            <p>"Conforme o sociólogo Émile Durkheim, uma sociedade sem regras claras encontra-se em estado de anomia social."</p>
+        `
+    },
+    conjunction: {
+        title: "O que é Conjunção?",
+        content: `
+            <h3>Definição</h3>
+            <p>Conjunções são palavras que ligam orações ou termos semelhantes de uma oração, estabelecendo relações entre eles.</p>
+            
+            <h3>Tipos importantes para redação</h3>
+            <ul>
+                <li><strong>Aditivas:</strong> e, nem, mas também (adicionam informações)</li>
+                <li><strong>Adversativas:</strong> mas, porém, contudo (oposição)</li>
+                <li><strong>Causais:</strong> porque, pois, já que (causa)</li>
+                <li><strong>Conclusivas:</strong> portanto, logo, assim (conclusão)</li>
+                <li><strong>Concessivas:</strong> embora, mesmo que (concessão)</li>
+            </ul>
+            
+            <h3>Exemplos de uso</h3>
+            <p>"A educação é fundamental para o desenvolvimento do país, <em>pois</em> forma cidadãos conscientes." (causal)</p>
+            <p>"O governo investe em saúde, <em>contudo</em> os hospitais ainda são precários." (adversativa)</p>
+        `
+    },
+    intervention: {
+        title: "O que é Proposta de Intervenção?",
+        content: `
+            <h3>Definição</h3>
+            <p>A proposta de intervenção é a solução concreta que você sugere para o problema discutido na redação. Deve ser detalhada e respeitar os direitos humanos.</p>
+            
+            <h3>Elementos essenciais (5 itens)</h3>
+            <ol>
+                <li><strong>Ação:</strong> o que será feito</li>
+                <li><strong>Agente:</strong> quem fará (governo, escola, família, mídia)</li>
+                <li><strong>Meio/Modo:</strong> como será feito</li>
+                <li><strong>Efeito/Objetivo:</strong> para que será feito</li>
+                <li><strong>Detalhamento:</strong> especificações da ação</li>
+            </ol>
+            
+            <h3>Exemplo</h3>
+            <p>"O Ministério da Educação (agente) deve implementar (ação) programas de capacitação para professores (meio) por meio de parcerias com universidades (detalhamento), com o objetivo de melhorar o ensino sobre cultura africana nas escolas (efeito)."</p>
+        `
+    }
+};
+
+// Elementos do modal
+const conceptModal = document.getElementById('conceptModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalContent = document.getElementById('modalContent');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const conceptButtons = document.querySelectorAll('.concept-btn');
+
+// Abrir modal com o conceito selecionado
+conceptButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const concept = button.dataset.concept;
+        const conceptInfo = conceptsData[concept];
+        
+        modalTitle.textContent = conceptInfo.title;
+        modalContent.innerHTML = conceptInfo.content;
+        
+        conceptModal.classList.add('active');
+    });
+});
+
+// Fechar modal
+closeModalBtn.addEventListener('click', () => {
+    conceptModal.classList.remove('active');
+});
+
+// Fechar modal ao clicar fora
+conceptModal.addEventListener('click', (e) => {
+    if (e.target === conceptModal) {
+        conceptModal.classList.remove('active');
+    }
 });
