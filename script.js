@@ -165,6 +165,7 @@ let shuffledQuestions = [];
 let darkMode = false;
 
 // Elementos da DOM
+const closeReadingBtn = document.getElementById('closeReadingBtn');
 const initialScreen = document.getElementById('initialScreen');
 const viewEssayBtn = document.getElementById('viewEssayBtn');
 const readingScreen = document.getElementById('readingScreen');
@@ -224,6 +225,12 @@ conceptModal.addEventListener('click', (e) => {
     if (e.target === conceptModal) {
         conceptModal.classList.remove('active');
     }
+});
+
+// Adicione este evento com os outros listeners:
+closeReadingBtn.addEventListener('click', () => {
+    readingScreen.style.display = 'none';
+    initialScreen.style.display = 'flex';
 });
 
 // Dados dos conceitos
