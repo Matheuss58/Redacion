@@ -10,59 +10,60 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
+    <button class="dark-mode-toggle" id="darkModeToggle">🌓</button>
     
     <!-- Tela inicial - apenas o botão -->
-<div class="initial-screen" id="initialScreen">
-    <!-- Cabeçalho simplificado -->
-    <div class="app-header">
-        <h1 class="app-title">RedacionMIL</h1>
-        <p class="app-subtitle">Sua trilha para a nota 1000</p>
+    <div class="initial-screen" id="initialScreen">
+        <!-- Cabeçalho simplificado -->
+        <div class="app-header">
+            <h1 class="app-title">RedacionMIL</h1>
+            <p class="app-subtitle">Sua trilha para a nota 1000</p>
+        </div>
+        
+        <!-- Container de botões em coluna única -->
+        <div class="action-buttons">
+            <!-- Botão principal destacado -->
+            <button class="action-btn primary-btn" id="viewEssayBtn">
+                <span class="btn-icon">📝</span>
+                <span class="btn-text">Ver Redação Modelo</span>
+            </button>
+            
+            <!-- Botões de conceitos -->
+            <button class="action-btn" data-concept="thesis">
+                <span class="btn-icon">🎯</span>
+                <span class="btn-text">O que é Tese?</span>
+            </button>
+            
+            <button class="action-btn" data-concept="repertoire">
+                <span class="btn-icon">📚</span>
+                <span class="btn-text">O que é Repertório?</span>
+            </button>
+            
+            <button class="action-btn" data-concept="conjunction">
+                <span class="btn-icon">🔗</span>
+                <span class="btn-text">O que é Conjunção?</span>
+            </button>
+            
+            <button class="action-btn" data-concept="intervention">
+                <span class="btn-icon">💡</span>
+                <span class="btn-text">Proposta de Intervenção</span>
+            </button>
+        </div>
+        
+        <!-- Rodapé minimalista -->
+        <div class="app-footer">
+            <p>Dica: Comece lendo uma redação modelo</p>
+        </div>
     </div>
-    
-    <!-- Container de botões em coluna única -->
-    <div class="action-buttons">
-        <!-- Botão principal destacado -->
-        <button class="action-btn primary-btn" id="viewEssayBtn">
-            <span class="btn-icon">📝</span>
-            <span class="btn-text">Ver Redação Modelo</span>
-        </button>
-        
-        <!-- Botões de conceitos -->
-        <button class="action-btn" data-concept="thesis">
-            <span class="btn-icon">🎯</span>
-            <span class="btn-text">O que é Tese?</span>
-        </button>
-        
-        <button class="action-btn" data-concept="repertoire">
-            <span class="btn-icon">📚</span>
-            <span class="btn-text">O que é Repertório?</span>
-        </button>
-        
-        <button class="action-btn" data-concept="conjunction">
-            <span class="btn-icon">🔗</span>
-            <span class="btn-text">O que é Conjunção?</span>
-        </button>
-        
-        <button class="action-btn" data-concept="intervention">
-            <span class="btn-icon">💡</span>
-            <span class="btn-text">Proposta de Intervenção</span>
-        </button>
-    </div>
-    
-    <!-- Rodapé minimalista -->
-    <div class="app-footer">
-        <p>Dica: Comece lendo uma redação modelo</p>
-    </div>
-</div>
 
-<!-- Modal para conceitos -->
-<div class="concept-modal" id="conceptModal">
-    <div class="modal-content">
-        <button class="close-modal" id="closeModalBtn">&times;</button>
-        <h2 class="modal-title" id="modalTitle"></h2>
-        <div class="modal-body" id="modalContent"></div>
+    <!-- Modal para conceitos -->
+    <div class="concept-modal" id="conceptModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-body" id="modalContent"></div>
+        </div>
     </div>
-</div>
 
     <!-- Tela de leitura da redação -->
     <div class="reading-screen" id="readingScreen" style="display: none;">
@@ -122,6 +123,7 @@
                 </div>
                 
                 <div class="comparison-buttons">
+                    <button class="back-btn" id="backToEssayBtn">Voltar para redação</button>
                     <button class="back-btn" id="backToHomeBtn">Voltar para início</button>
                     <button class="next-btn" id="nextQuestionBtn">Próxima Questão</button>
                 </div>
@@ -131,13 +133,13 @@
 
     <script src="script.js"></script>
     <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js', { scope: './' }) 
-    .then(reg => console.log('Service Worker registrado com scope:', reg.scope))
-    .catch(err => console.error('Falha no registro do Service Worker:', err));
-  });
-}
-</script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js', { scope: './' }) 
+        .then(reg => console.log('Service Worker registrado com scope:', reg.scope))
+        .catch(err => console.error('Falha no registro do Service Worker:', err));
+      });
+    }
+    </script>
 </body>
 </html>

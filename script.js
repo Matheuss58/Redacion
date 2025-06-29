@@ -162,6 +162,7 @@ let currentEssayIndex = 0;
 let currentQuestionIndex = 0;
 let shuffledEssays = [];
 let shuffledQuestions = [];
+let darkMode = false;
 
 // Elementos da DOM
 const initialScreen = document.getElementById('initialScreen');
@@ -176,12 +177,20 @@ const comparisonScreen = document.getElementById('comparisonScreen');
 const showAnswerBtn = document.getElementById('showAnswerBtn');
 const nextQuestionBtn = document.getElementById('nextQuestionBtn');
 const backToHomeBtn = document.getElementById('backToHomeBtn');
+const backToEssayBtn = document.getElementById('backToEssayBtn');
 const essayTitle = document.getElementById('essayTitle');
 const essayText = document.getElementById('essayText');
 const questionLabel = document.getElementById('questionLabel');
 const userAnswer = document.getElementById('userAnswer');
 const userAnswerText = document.getElementById('userAnswerText');
 const correctAnswerText = document.getElementById('correctAnswerText');
+const darkModeToggle = document.getElementById('darkModeToggle');
+const actionButtons = document.querySelectorAll('.action-btn');
+const conceptButtons = document.querySelectorAll('[data-concept]');
+const conceptModal = document.getElementById('conceptModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalContent = document.getElementById('modalContent');
+const closeModalBtn = document.getElementById('closeModalBtn');
 
 // Event Listeners
 viewEssayBtn.addEventListener('click', showReadingScreen);
@@ -189,97 +198,33 @@ startQuestionsBtn.addEventListener('click', showMainContent);
 showAnswerBtn.addEventListener('click', showComparison);
 nextQuestionBtn.addEventListener('click', nextQuestion);
 backToHomeBtn.addEventListener('click', backToHome);
+backToEssayBtn.addEventListener('click', backToEssay);
+darkModeToggle.addEventListener('click', toggleDarkMode);
 
-// Funções
-function showReadingScreen() {
-    initialScreen.style.display = 'none';
-    readingScreen.style.display = 'block';
-    loadCurrentEssayForReading();
-}
-
-function showMainContent() {
-    readingScreen.style.display = 'none';
-    mainContent.style.display = 'block';
-    loadCurrentQuestion();
-}
-
-function loadCurrentEssayForReading() {
-    const currentEssay = shuffledEssays[currentEssayIndex];
-    readingEssayTitle.textContent = currentEssay.title;
-    readingEssayText.textContent = currentEssay.text;
-}
-
-// Substitua a função shuffleEssays por esta:
-function shuffleEssays() {
-    shuffledEssays = [...essaysDatabase];
-    // Embaralha a ordem das redações
-    for (let i = shuffledEssays.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledEssays[i], shuffledEssays[j]] = [shuffledEssays[j], shuffledEssays[i]];
-    }
-    
-    // Embaralha as questões de cada redação individualmente
-    shuffledEssays.forEach(essay => {
-        essay.shuffledQuestions = [...essay.questions];
-        for (let i = essay.shuffledQuestions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [essay.shuffledQuestions[i], essay.shuffledQuestions[j]] = [essay.shuffledQuestions[j], essay.shuffledQuestions[i]];
-        }
+// Configurar botões de conceitos
+conceptButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const concept = button.dataset.concept;
+        const conceptInfo = conceptsData[concept];
+        
+        modalTitle.textContent = conceptInfo.title;
+        modalContent.innerHTML = conceptInfo.content;
+        
+        conceptModal.classList.add('active');
     });
-}
-
-// Substitua a função loadCurrentQuestion por esta:
-function loadCurrentQuestion() {
-    // Seleciona uma redação aleatória
-    currentEssayIndex = Math.floor(Math.random() * shuffledEssays.length);
-    const currentEssay = shuffledEssays[currentEssayIndex];
-    
-    essayTitle.textContent = currentEssay.title;
-    essayText.textContent = currentEssay.text;
-    
-    // Seleciona uma questão aleatória dessa redação
-    const randomQuestionIndex = Math.floor(Math.random() * currentEssay.questions.length);
-    const question = currentEssay.questions[randomQuestionIndex];
-    
-    questionLabel.textContent = question.question;
-    userAnswer.value = '';
-    
-    // Armazena a resposta correta para uso posterior
-    questionLabel.dataset.correctAnswer = question.answer;
-    
-    exerciseScreen.style.display = 'block';
-    comparisonScreen.style.display = 'none';
-}
-
-function showComparison() {
-    userAnswerText.textContent = userAnswer.value || "(Não respondido)";
-    correctAnswerText.textContent = questionLabel.dataset.correctAnswer;
-    
-    exerciseScreen.style.display = 'none';
-    comparisonScreen.style.display = 'block';
-}
-
-// Substitua a função nextQuestion por esta versão simplificada:
-function nextQuestion() {
-    // Sempre carrega uma nova pergunta aleatória
-    comparisonScreen.style.display = 'none';
-    exerciseScreen.style.display = 'block';
-    loadCurrentQuestion();
-}
-
-function backToHome() {
-    mainContent.style.display = 'none';
-    initialScreen.style.display = 'flex';
-    currentEssayIndex = 0;
-    shuffleEssays();
-}
-
-// Inicialização
-document.addEventListener('DOMContentLoaded', function() {
-    shuffleEssays();
 });
 
-// Adicionar ao script.js existente
+// Fechar modal
+closeModalBtn.addEventListener('click', () => {
+    conceptModal.classList.remove('active');
+});
+
+// Fechar modal ao clicar fora
+conceptModal.addEventListener('click', (e) => {
+    if (e.target === conceptModal) {
+        conceptModal.classList.remove('active');
+    }
+});
 
 // Dados dos conceitos
 const conceptsData = {
@@ -361,34 +306,115 @@ const conceptsData = {
     }
 };
 
-// Elementos do modal
-const conceptModal = document.getElementById('conceptModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalContent = document.getElementById('modalContent');
-const closeModalBtn = document.getElementById('closeModalBtn');
-const conceptButtons = document.querySelectorAll('.concept-btn');
-
-// Abrir modal com o conceito selecionado
-conceptButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const concept = button.dataset.concept;
-        const conceptInfo = conceptsData[concept];
-        
-        modalTitle.textContent = conceptInfo.title;
-        modalContent.innerHTML = conceptInfo.content;
-        
-        conceptModal.classList.add('active');
-    });
-});
-
-// Fechar modal
-closeModalBtn.addEventListener('click', () => {
-    conceptModal.classList.remove('active');
-});
-
-// Fechar modal ao clicar fora
-conceptModal.addEventListener('click', (e) => {
-    if (e.target === conceptModal) {
-        conceptModal.classList.remove('active');
+// Inicialização
+document.addEventListener('DOMContentLoaded', function() {
+    // Carregar modo escuro do localStorage
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (savedDarkMode) {
+        darkMode = true;
+        document.documentElement.setAttribute('data-theme', 'dark');
+        darkModeToggle.textContent = '🌞';
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        darkModeToggle.textContent = '🌓';
     }
+    
+    shuffleEssays();
 });
+
+// Funções
+function showReadingScreen() {
+    initialScreen.style.display = 'none';
+    readingScreen.style.display = 'block';
+    loadCurrentEssayForReading();
+}
+
+function showMainContent() {
+    readingScreen.style.display = 'none';
+    mainContent.style.display = 'block';
+    loadCurrentQuestion();
+}
+
+function loadCurrentEssayForReading() {
+    const currentEssay = shuffledEssays[currentEssayIndex];
+    readingEssayTitle.textContent = currentEssay.title;
+    readingEssayText.textContent = currentEssay.text;
+}
+
+function shuffleEssays() {
+    shuffledEssays = [...essaysDatabase];
+    // Embaralha a ordem das redações
+    for (let i = shuffledEssays.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledEssays[i], shuffledEssays[j]] = [shuffledEssays[j], shuffledEssays[i]];
+    }
+    
+    // Embaralha as questões de cada redação individualmente
+    shuffledEssays.forEach(essay => {
+        essay.shuffledQuestions = [...essay.questions];
+        for (let i = essay.shuffledQuestions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [essay.shuffledQuestions[i], essay.shuffledQuestions[j]] = [essay.shuffledQuestions[j], essay.shuffledQuestions[i]];
+        }
+    });
+}
+
+function loadCurrentQuestion() {
+    // Seleciona uma redação aleatória
+    currentEssayIndex = Math.floor(Math.random() * shuffledEssays.length);
+    const currentEssay = shuffledEssays[currentEssayIndex];
+    
+    essayTitle.textContent = currentEssay.title;
+    essayText.textContent = currentEssay.text;
+    
+    // Seleciona uma questão aleatória dessa redação
+    const randomQuestionIndex = Math.floor(Math.random() * currentEssay.questions.length);
+    const question = currentEssay.questions[randomQuestionIndex];
+    
+    questionLabel.textContent = question.question;
+    userAnswer.value = '';
+    
+    // Armazena a resposta correta para uso posterior
+    questionLabel.dataset.correctAnswer = question.answer;
+    
+    exerciseScreen.style.display = 'block';
+    comparisonScreen.style.display = 'none';
+}
+
+function showComparison() {
+    userAnswerText.textContent = userAnswer.value || "(Não respondido)";
+    correctAnswerText.textContent = questionLabel.dataset.correctAnswer;
+    
+    exerciseScreen.style.display = 'none';
+    comparisonScreen.style.display = 'block';
+}
+
+function nextQuestion() {
+    comparisonScreen.style.display = 'none';
+    exerciseScreen.style.display = 'block';
+    loadCurrentQuestion();
+}
+
+function backToHome() {
+    mainContent.style.display = 'none';
+    initialScreen.style.display = 'flex';
+    currentEssayIndex = 0;
+    shuffleEssays();
+}
+
+function backToEssay() {
+    comparisonScreen.style.display = 'none';
+    exerciseScreen.style.display = 'block';
+}
+
+function toggleDarkMode() {
+    darkMode = !darkMode;
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+    darkModeToggle.textContent = darkMode ? '🌓' : '🌞';
+    localStorage.setItem('darkMode', darkMode);
+    
+    // Garante que a tela inicial mantenha seu gradiente
+    if (initialScreen.style.display !== 'none') {
+        initialScreen.style.background = 'linear-gradient(135deg, #6C63FF 0%, #8A85FF 100%)';
+    }
+}
